@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% now "Y" as current_year %}
+
+{% block title %}Scholar Corridor | Academic Repository for Research{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="bg-navy-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.03) 35px, rgba(255,255,255,0.03) 70px)"></div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative py-20 md:py-28">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <div class="text-left">
+                    <h1 class="font-serif text-3xl md:text-4xl font-bold tracking-tight">Scholar Corridor</h1>
+                    <!-- <p class="text-navy-300 text-xs uppercase tracking-[0.2em]">Academic repository</p> -->
+                </div>
+            </div>
+            <p class="text-navy-200 text-lg md:text-xl leading-relaxed mb-8">
+                An open-access project for academic papers, thesis, and dissertations
+                maintained as a repository affiliated with  research institutions.
+            </p>
+            <form action="{% url 'search' %}" method="get" class="relative max-w-xl mx-auto">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navy-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" name="q" placeholder="Search papers, authors, keywords..."
+                    class="w-full pl-12 pr-28 py-3.5 rounded-lg bg-white text-navy-900 text-base placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-400 shadow-lg">
+                <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 px-5 py-2 bg-navy-800 text-white text-sm font-semibold rounded hover:bg-navy-700 transition-colors">
+                    Search
+                </button>
+            </form>
+            <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-navy-300">
+                <a href="{% url 'search' %}" class="hover:text-white transition-colors flex items-center gap-1">Browse all papers <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></a>
+                <a href="{% url 'search' %}?document_type=thesis" class="hover:text-white transition-colors">Thesis</a>
+                <a href="{% url 'search' %}?document_type=dissertation" class="hover:text-white transition-colors">Dissertations</a>
+                <a href="{% url 'search' %}?document_type=research_paper" class="hover:text-white transition-colors">Research Papers</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="bg-navy-50 border-b border-navy-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+                <div class="text-2xl md:text-3xl font-serif font-bold text-navy-800">{{ total_papers }}</div>
+                <div class="text-xs text-navy-500 uppercase tracking-wide mt-0.5">Papers</div>
+            </div>
+            <div>
+                <div class="text-2xl md:text-3xl font-serif font-bold text-navy-800">{{ total_departments }}</div>
+                <div class="text-xs text-navy-500 uppercase tracking-wide mt-0.5">Departments</div>
+            </div>
+            <div>
+                <div class="text-2xl md:text-3xl font-serif font-bold text-navy-800">{{ department_counts.items|length }}</div>
+                <div class="text-xs text-navy-500 uppercase tracking-wide mt-0.5">Active Fields</div>
+            </div>
+            <div>
+                <div class="text-2xl md:text-3xl font-serif font-bold text-navy-800">Free</div>
+                <div class="text-xs text-navy-500 uppercase tracking-wide mt-0.5">Open Access</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Submissions -->
+<section class="py-12 md:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="font-serif text-2xl font-bold text-navy-900">Recent Submissions</h2>
+            <a href="{% url 'search' %}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors flex items-center gap-1">
+                View all <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        {% if recent_papers %}
+        <div class="grid gap-4 md:grid-cols-2">
+            {% for paper in recent_papers %}
+            <article class="bg-white border border-navy-100 rounded-lg shadow-sm p-5 hover:shadow-md transition-shadow">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-navy-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <div class="min-w-0 flex-1">
+                        <a href="{{ paper.get_absolute_url }}" class="group">
+                            <h3 class="font-serif text-base font-bold text-navy-900 group-hover:text-navy-600 transition-colors leading-snug">{{ paper.title }}</h3>
+                        </a>
+                        <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-navy-500">
+                            <a href="{% url 'author_profile' paper.author.pk %}" class="hover:text-navy-800 transition-colors font-medium">{{ paper.author.get_full_name|default:paper.author.email }}</a>
+                            <span>{{ paper.department }}</span>
+                            <span>{{ paper.year }}</span>
+                            <span class="px-2.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide
+                                {% if paper.document_type == 'thesis' %}bg-blue-100 text-blue-800
+                                {% elif paper.document_type == 'dissertation' %}bg-emerald-100 text-emerald-800
+                                {% else %}bg-amber-100 text-amber-800{% endif %}">
+                                {{ paper.get_document_type_display }}
+                            </span>
+                        </div>
+                        <p class="mt-2 text-sm text-navy-600 leading-relaxed line-clamp-3">{{ paper.abstract }}</p>
+                        {% if paper.keyword_list %}
+                        <div class="mt-2.5 flex flex-wrap gap-1.5">
+                            {% for kw in paper.keyword_list|slice:":4" %}
+                            <a href="{% url 'search' %}?q={{ kw }}" class="px-2 py-0.5 bg-navy-50 text-navy-600 text-xs rounded hover:bg-navy-100 transition-colors">{{ kw }}</a>
+                            {% endfor %}
+                            {% if paper.keyword_list|length > 4 %}
+                            <span class="px-2 py-0.5 text-navy-400 text-xs">+{{ paper.keyword_list|length|add:"-4" }} more</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-16 text-navy-400">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.554 18 7.5 18c1.746 0 3.332.477 4.5 1.253m0-13C13.168 5.477 14.554 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.946 0-3.332.477-4.5 1.253"/></svg>
+            <p>No papers yet. Be the first to submit!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Submit CTA -->
+<section class="bg-navy-50 border-t border-navy-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        <h2 class="font-serif text-xl font-bold text-navy-900 mb-2">Share Your Research</h2>
+        <p class="text-navy-600 text-sm mb-5 max-w-md mx-auto">Submit your thesis, dissertation, or research paper to make it accessible to the global academic community.</p>
+        <a href="{% url 'submit_paper' %}" class="inline-flex items-center justify-center px-5 py-2.5 bg-navy-800 text-white font-semibold text-sm rounded hover:bg-navy-700 transition-colors">Submit a Paper</a>
+    </div>
+</section>
+{% endblock %}
