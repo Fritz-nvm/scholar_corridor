@@ -16,7 +16,7 @@
 {% block content %}
 <div class="bg-navy-50 border-b border-navy-100">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <a href="{% url 'search' %}" class="inline-flex items-center gap-1 text-sm text-navy-600 hover:text-navy-800 transition-colors">
+        <a href="{% url 'repository:search' %}" class="inline-flex items-center gap-1 text-sm text-navy-600 hover:text-navy-800 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
             Back to search
         </a>
@@ -35,7 +35,7 @@
             <h1 class="font-serif text-2xl md:text-3xl font-bold text-navy-900 leading-snug">{{ paper.title }}</h1>
 
             <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-navy-600">
-                <a href="{% url 'author_profile' paper.author.pk %}" class="flex items-center gap-1.5 hover:text-navy-800 transition-colors font-medium">
+                <a href="{% url 'repository:author_profile' paper.author.pk %}" class="flex items-center gap-1.5 hover:text-navy-800 transition-colors font-medium">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     {{ paper.author.get_full_name|default:paper.author.email }}
                 </a>
@@ -57,7 +57,7 @@
             {% if paper.pdf_file %}
             <div class="mt-6">
                 {% if user.is_authenticated %}
-                <a href="{% url 'download_paper' paper.slug %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-navy-800 text-white font-semibold text-sm rounded hover:bg-navy-700 transition-colors">
+                <a href="{% url 'repository:download_paper' paper.slug %}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-navy-800 text-white font-semibold text-sm rounded hover:bg-navy-700 transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     Download Full PDF
                 </a>
@@ -68,8 +68,8 @@
                         <p class="text-xs text-navy-500 mt-0.5">Registration takes less than a minute.</p>
                     </div>
                     <div class="flex gap-2">
-                        <a href="{% url 'signup' %}" class="inline-flex items-center justify-center px-4 py-2 bg-gold-400 text-navy-900 font-semibold text-sm rounded hover:bg-gold-500 transition-colors">Register Free</a>
-                        <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-4 py-2 bg-white text-navy-800 font-semibold text-sm rounded border border-navy-200 hover:bg-navy-50 transition-colors">Sign In</a>
+                        <a href="{% url 'accounts:signup' %}" class="inline-flex items-center justify-center px-4 py-2 bg-gold-400 text-navy-900 font-semibold text-sm rounded hover:bg-gold-500 transition-colors">Register Free</a>
+                        <a href="{% url 'accounts:login' %}" class="inline-flex items-center justify-center px-4 py-2 bg-white text-navy-800 font-semibold text-sm rounded border border-navy-200 hover:bg-navy-50 transition-colors">Sign In</a>
                     </div>
                 </div>
                 {% endif %}
@@ -91,7 +91,7 @@
                 </h3>
                 <div class="flex flex-wrap gap-2">
                     {% for kw in paper.keyword_list %}
-                    <a href="{% url 'search' %}?q={{ kw }}" class="px-3 py-1 bg-navy-50 text-navy-700 text-sm rounded border border-navy-100 hover:bg-navy-100 transition-colors">{{ kw }}</a>
+                    <a href="{% url 'repository:search' %}?q={{ kw }}" class="px-3 py-1 bg-navy-50 text-navy-700 text-sm rounded border border-navy-100 hover:bg-navy-100 transition-colors">{{ kw }}</a>
                     {% endfor %}
                 </div>
             </section>

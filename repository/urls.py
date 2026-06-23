@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = "repository"
+
 urlpatterns = [
     path("", views.landing, name="landing"),
     path("search/", views.search, name="search"),

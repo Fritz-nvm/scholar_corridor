@@ -4,9 +4,12 @@ from django.urls import path
 from .forms import PasswordResetRequestForm, SetNewPasswordForm
 from . import views
 
+app_name = "accounts"
+
 urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("register/", views.signup, name="signup"),
+    path("logout/", views.logout_view, name="logout"),
     path("profile/", views.profile, name="profile"),
     path("verify-email/<uidb64>/<token>/", views.verify_email, name="verify_email"),
     path(

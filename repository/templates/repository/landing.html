@@ -19,7 +19,7 @@
                 An open-access project for academic papers, thesis, and dissertations
                 maintained as a repository affiliated with  research institutions.
             </p>
-            <form action="{% url 'search' %}" method="get" class="relative max-w-xl mx-auto">
+            <form action="{% url 'repository:search' %}" method="get" class="relative max-w-xl mx-auto">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navy-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <input type="text" name="q" placeholder="Search papers, authors, keywords..."
                     class="w-full pl-12 pr-28 py-3.5 rounded-lg bg-white text-navy-900 text-base placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-gold-400 shadow-lg">
@@ -28,10 +28,10 @@
                 </button>
             </form>
             <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-navy-300">
-                <a href="{% url 'search' %}" class="hover:text-white transition-colors flex items-center gap-1">Browse all papers <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></a>
-                <a href="{% url 'search' %}?document_type=thesis" class="hover:text-white transition-colors">Thesis</a>
-                <a href="{% url 'search' %}?document_type=dissertation" class="hover:text-white transition-colors">Dissertations</a>
-                <a href="{% url 'search' %}?document_type=research_paper" class="hover:text-white transition-colors">Research Papers</a>
+                <a href="{% url 'repository:search' %}" class="hover:text-white transition-colors flex items-center gap-1">Browse all papers <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></a>
+                <a href="{% url 'repository:search' %}?document_type=thesis" class="hover:text-white transition-colors">Thesis</a>
+                <a href="{% url 'repository:search' %}?document_type=dissertation" class="hover:text-white transition-colors">Dissertations</a>
+                <a href="{% url 'repository:search' %}?document_type=research_paper" class="hover:text-white transition-colors">Research Papers</a>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8">
             <h2 class="font-serif text-2xl font-bold text-navy-900">Recent Submissions</h2>
-            <a href="{% url 'search' %}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors flex items-center gap-1">
+            <a href="{% url 'repository:search' %}" class="text-sm font-semibold text-navy-600 hover:text-navy-800 transition-colors flex items-center gap-1">
                 View all <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
             </a>
         </div>
@@ -81,7 +81,7 @@
                             <h3 class="font-serif text-base font-bold text-navy-900 group-hover:text-navy-600 transition-colors leading-snug">{{ paper.title }}</h3>
                         </a>
                         <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-navy-500">
-                            <a href="{% url 'author_profile' paper.author.pk %}" class="hover:text-navy-800 transition-colors font-medium">{{ paper.author.get_full_name|default:paper.author.email }}</a>
+                            <a href="{% url 'repository:author_profile' paper.author.pk %}" class="hover:text-navy-800 transition-colors font-medium">{{ paper.author.get_full_name|default:paper.author.email }}</a>
                             <span>{{ paper.department }}</span>
                             <span>{{ paper.year }}</span>
                             <span class="px-2.5 py-0.5 rounded text-xs font-semibold uppercase tracking-wide
@@ -95,7 +95,7 @@
                         {% if paper.keyword_list %}
                         <div class="mt-2.5 flex flex-wrap gap-1.5">
                             {% for kw in paper.keyword_list|slice:":4" %}
-                            <a href="{% url 'search' %}?q={{ kw }}" class="px-2 py-0.5 bg-navy-50 text-navy-600 text-xs rounded hover:bg-navy-100 transition-colors">{{ kw }}</a>
+                            <a href="{% url 'repository:search' %}?q={{ kw }}" class="px-2 py-0.5 bg-navy-50 text-navy-600 text-xs rounded hover:bg-navy-100 transition-colors">{{ kw }}</a>
                             {% endfor %}
                             {% if paper.keyword_list|length > 4 %}
                             <span class="px-2 py-0.5 text-navy-400 text-xs">+{{ paper.keyword_list|length|add:"-4" }} more</span>
@@ -121,7 +121,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
         <h2 class="font-serif text-xl font-bold text-navy-900 mb-2">Share Your Research</h2>
         <p class="text-navy-600 text-sm mb-5 max-w-md mx-auto">Submit your thesis, dissertation, or research paper to make it accessible to the global academic community.</p>
-        <a href="{% url 'submit_paper' %}" class="inline-flex items-center justify-center px-5 py-2.5 bg-navy-800 text-white font-semibold text-sm rounded hover:bg-navy-700 transition-colors">Submit a Paper</a>
+        <a href="{% url 'repository:submit_paper' %}" class="inline-flex items-center justify-center px-5 py-2.5 bg-navy-800 text-white font-semibold text-sm rounded hover:bg-navy-700 transition-colors">Submit a Paper</a>
     </div>
 </section>
 {% endblock %}

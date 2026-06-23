@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.views.decorators.http import require_POST
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
@@ -97,6 +98,12 @@ def login_view(request):
             form.add_error(None, "Please enter a valid email and password.")
 
     return render(request, "registration/login.html", {"form": form})
+
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect(request, "landing")
 
 
 @login_required
